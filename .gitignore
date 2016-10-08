@@ -1,0 +1,4 @@
+vendor/replica/.vagrant
+vendor/replica/src
+*~
+.idea

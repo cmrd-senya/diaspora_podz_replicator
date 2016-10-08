@@ -1,0 +1,3 @@
+# Diaspora* Podz Replicator
+
+This gem contains rake tasks and supplimentary tools to make [diaspora*](https://github.com/diaspora/diaspora) deployment easy. By including this gem you'll make it available to deploy diaspora pods by issuing rake tasks within your project directory and thus make diaspora installation (or a few) available to test your software against it. Also can be used to test diaspora itself. Deployment process is backed by [diaspora-replica](https://github.com/joebew42/diaspora-replica).
