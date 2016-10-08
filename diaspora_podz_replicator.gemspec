@@ -8,11 +8,13 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/cmrd-senya/diaspora_podz_replicator"
   s.summary     = "Tools for fast deploy of diaspora pods primarily for test purposes"
   s.description = "Tools for fast deploy of diaspora pods primarily for test purposes"
+  s.license     = "AGPL-3.0"
 
   s.files       =
     [
       *`git ls-files`.split("\n"),
-      *`cd #{File.dirname(__FILE__)}/vendor/replica && git submodule foreach 'git ls-files | sed "s|^|vendor/replica/$path/|"'`.split("\n")
+      *`cd #{File.dirname(__FILE__)}/vendor/replica && git ls-files | sed "s|^|vendor/replica/$path/|"`.split("\n"),
+      *`cd #{File.dirname(__FILE__)}/vendor/replica && git submodule --quiet foreach 'git ls-files | sed "s|^|vendor/replica/$path/|"'`.split("\n")
     ]
   s.require_paths = ["lib"]
 
