@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+require "trollop"
+require "diaspora_podz_replicator"
+
+SUB_COMMANDS = %w(up halt deploy launch stop clean destroy reset_db)
+preplica_subcmd = ARGV.shift # get the subcommand
+
+opts = Trollop::options do
+  opt :config, "Configuration path", default: "#{Dir.pwd}/config/replica.yml"
+  opt :domain, "Type of pods configuration (testfarm, development)", default: "testfarm"
+  opt :logdir, "Log directory", default: "#{Dir.pwd}/log"
+end
+
+Trollop::die("Use one of the following subcommands: #{SUB_COMMANDS}") if preplica_subcmd.nil?
+
+DiasporaPodzReplicator.logdir = opts.logdir
+DiasporaPodzReplicator.configuration_file = opts.config
+
+case preplica_subcmd
+  when "up"
+    if opts.domain == "testfarm"
+      DiasporaPodzReplicator.bring_up_testfarm
+    end
+  when "halt"
+    DiasporaPodzReplicator.halt(opts.domain)
+  when "deploy"
+      DiasporaPodzReplicator.deploy_apps
+  when "launch"
+    DiasporaPodzReplicator.launch_pods
+  when "stop"
+    DiasporaPodzReplicator.stop_pods
+  when "clean", "destroy"
+    DiasporaPodzReplicator.clean(opts.domain)
+  when "reset_db"
+    DiasporaPodzReplicator.reset_databases
+  else
+    Trollop::die "unknown subcommand #{preplica_subcmd.inspect}"
+end

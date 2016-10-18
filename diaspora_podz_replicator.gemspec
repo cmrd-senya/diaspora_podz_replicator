@@ -17,11 +17,12 @@ Gem::Specification.new do |s|
       *`cd #{File.dirname(__FILE__)}/vendor/replica && git submodule --quiet foreach 'git ls-files | sed "s|^|vendor/replica/$path/|"'`.split("\n")
     ]
   s.require_paths = ["lib"]
+  s.executables << "preplica"
 
-  s.add_runtime_dependency "rake"
   s.add_runtime_dependency "capistrano"
   s.add_runtime_dependency "capistrano-rvm"
-  s.add_runtime_dependency "capistrano-rails"
-  s.add_runtime_dependency "capistrano-rails-collection"
+  s.add_runtime_dependency "capistrano-rails", "~> 1.1"
+  s.add_runtime_dependency "capistrano-rails-collection", "~> 0.1"
   s.add_runtime_dependency "capistrano-db-tasks"
+  s.add_runtime_dependency "trollop"
 end
