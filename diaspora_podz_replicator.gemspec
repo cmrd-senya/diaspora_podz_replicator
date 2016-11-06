@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name        = "diaspora_podz_replicator"
-  s.version     = "0.1.0"
+  s.version     = "0.1.0.dev"
   s.authors     = ["cmrd Senya"]
   s.email       = ["senya@riseup.net"]
   s.homepage    = "https://github.com/cmrd-senya/diaspora_podz_replicator"
