@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.files       =
     [
       *`git ls-files`.split("\n"),
-      *`cd #{File.dirname(__FILE__)}/vendor/replica && git ls-files | sed "s|^|vendor/replica/$path/|"`.split("\n"),
+      *`cd #{File.dirname(__FILE__)}/vendor/replica && git ls-files | sed "s|^|vendor/replica$path/|"`.split("\n"),
       *`cd #{File.dirname(__FILE__)}/vendor/replica && git submodule --quiet foreach 'git ls-files | sed "s|^|vendor/replica/$path/|"'`.split("\n")
     ]
   s.require_paths = ["lib"]
