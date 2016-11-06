@@ -2,7 +2,7 @@
 require "trollop"
 require "diaspora_podz_replicator"
 
-SUB_COMMANDS = %w(up halt deploy launch stop clean destroy reset_db)
+SUB_COMMANDS = %w(up halt deploy launch stop clean destroy reset_db help)
 preplica_subcmd = ARGV.shift # get the subcommand
 
 opts = Trollop::options do
@@ -33,6 +33,11 @@ case preplica_subcmd
     DiasporaPodzReplicator.clean(opts.domain)
   when "reset_db"
     DiasporaPodzReplicator.reset_databases
+  when "--help", "help"
+    puts "Command synopsis: preplica <subcommand> [options]"
+    puts "\nAvailable subcommands are: #{SUB_COMMANDS.join(', ')}"
+    puts
+    Trollop::educate
   else
     Trollop::die "unknown subcommand #{preplica_subcmd.inspect}"
 end
