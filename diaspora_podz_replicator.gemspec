@@ -19,10 +19,10 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.executables << "preplica"
 
-  s.add_runtime_dependency "capistrano"
-  s.add_runtime_dependency "capistrano-rvm"
+  s.add_runtime_dependency "capistrano", "~> 3.0"
+  s.add_runtime_dependency "capistrano-rvm", "~> 0.1"
   s.add_runtime_dependency "capistrano-rails", "~> 1.1"
   s.add_runtime_dependency "capistrano-rails-collection", "~> 0.1"
-  s.add_runtime_dependency "capistrano-db-tasks"
-  s.add_runtime_dependency "trollop"
+  s.add_runtime_dependency "capistrano-db-tasks.senya", "~> 0.4"
+  s.add_runtime_dependency "trollop", "~> 2.1"
 end
