@@ -4,11 +4,9 @@ require_relative "../vendor/replica/api"
 
 module DiasporaPodzReplicator
   class << self
-    include Diaspora::Replica::API
+    attr_writer :configuration_file
 
-    def configuration_file=(conf_file)
-      @configuration_file = conf_file
-    end
+    include Diaspora::Replica::API
 
     def bring_up_testfarm
       install_vagrant_requirements
@@ -21,7 +19,7 @@ module DiasporaPodzReplicator
       Bundler.with_clean_env do
         report_info `vagrant --version`
       end
-      report_info `ruby --version`
+      report_info "Host #{`ruby --version`}"
       if testenv_off?
         report_info "Bringing up test environment"
         within_diaspora_replica { pipesh "env pod_count=#{pod_count} vagrant group up testfarm" }
@@ -33,7 +31,7 @@ module DiasporaPodzReplicator
     def deploy_apps
       return unless bring_up_testfarm
       (1..pod_count).each do |i|
-        deploy_app_revision(i, configuration["pod#{i}"]["revisions"].first)
+        deploy_app_revision(i, pod_revision(i))
       end
     end
 
@@ -88,20 +86,35 @@ module DiasporaPodzReplicator
     end
 
     def configuration
-      return unless @configuration_file
       @configuration ||= YAML.load(open(@configuration_file))["configuration"]
+    rescue => e
+      report_info "Failed to read configuration #{e.to_s}, will use defaults"
+      @configuration = {}
+    end
+
+    def access_nested_setting(*args)
+      conf = configuration
+      args.each do |arg|
+        conf = conf[arg]
+        return unless conf
+      end
+      conf
     end
 
     def pod_uri(pod_nr)
-      configuration["pod#{pod_nr}"]["uri"] || "http://pod#{pod_nr}.diaspora.local"
+      access_nested_setting("pods", pod_nr, "uri") || "http://192.168.11.#{4+pod_nr*2}"
     end
 
     def pod_host(pod_nr)
       URI.parse(pod_uri(pod_nr)).host
     end
 
+    def pod_revision(pod_nr)
+      access_nested_setting("pods", pod_nr, "revision") || "HEAD"
+    end
+
     def pod_count
-      configuration["pod_count"]
+      configuration["pod_count"] || 1
     end
 
     def diaspora_root
