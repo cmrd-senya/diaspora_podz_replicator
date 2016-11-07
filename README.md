@@ -19,15 +19,28 @@ Vagrant must be installed from the upstream package ([download page](https://www
 
 ## Prepare environment
 
-#### 1. Create a config file in `config/replica.yml`
-
-[Here](https://raw.githubusercontent.com/cmrd-senya/diaspora/fb4d972c49d33e4f9e8ec114557006b76e707fb8/config/replica.yml.example) is an example of the file.
+#### 1. Create a config file in `config/replica.yml` (optional)
 
 And adjust `config/replica.yml` with the settings you need (pod count, software revisions, etc). If you work outside the diaspora* source directory, you must add the `diaspora_root` configuration parameter in your configuration file pointing to diaspora source folder.
 
 Configuration address may be tuned with the `--config` command line switch.
 
-#### 2. Add pods hostnames to `/etc/hosts`
+Here is an example of the file:
+```yml
+configuration:
+  pod_count: 3
+  pods:
+    2:
+      revision: "master"
+    1:
+      revision: "develop"
+    3:
+      revision: "develop"
+```
+
+Configuration file is optional. If no configuration file provided, the defaults are used, which are pod_count=1, revision=HEAD.
+
+#### 2. Add pods hostnames to `/etc/hosts` (optional)
 ```
 ...
 192.168.11.6    pod1.diaspora.local
@@ -37,7 +50,7 @@ Configuration address may be tuned with the `--config` command line switch.
 ...
 ```
 
-By default pods are addressed using domain names which should be accessible from your host. IP addresses are hardcoded in Vagrant file of my customized replica version. Domain binding is probably not a necessary step, but I never tested it without, so that may require some more work.
+Pods are addressed using domain names which should be accessible from your host. IP addresses are hardcoded in Vagrant file of my customized replica version. If you don't change your `/etc/hosts`, you'll still be able to access them using their IP addresses. But the domains the pods are configurated to will be `podN.diaspora.local` (so to access alice on pod2 from pod1 you'll type alice@pod2.diaspora.local).
 
 #### 3. Vagrant must be allowed to execute containers without asking password (must be run without `sudo`)
 
